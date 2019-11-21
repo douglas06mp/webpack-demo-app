@@ -3,12 +3,25 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    main: "./src/index.js",
+    vendor: "./src/vendor.js"
+  },
   module: {
     rules: [
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "postcss-loader","sass-loader"]
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: [require("autoprefixer")]
+            }
+          },
+          "sass-loader"
+        ]
       },
       {
         test: /\.html$/,
@@ -19,7 +32,7 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            name: "[name].[hash][est]",
+            name: "[name].[hash].[ext]",
             outputPath: "imgs"
           }
         }
@@ -27,9 +40,11 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['*.js']
+    }),
     new HtmlWebpackPlugin({
       template: "./src/template.html"
     })
   ]
-}
+};
