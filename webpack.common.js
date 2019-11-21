@@ -1,5 +1,3 @@
-const path = require("path")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 module.exports = {
@@ -9,20 +7,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          "style-loader",
-          "css-loader",
-          {
-            loader: "postcss-loader",
-            options: {
-              plugins: [require("autoprefixer")]
-            }
-          },
-          "sass-loader"
-        ]
-      },
       {
         test: /\.html$/,
         use: ["html-loader"]
@@ -41,10 +25,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ['*.js']
-    }),
-    new HtmlWebpackPlugin({
-      template: "./src/template.html"
+      cleanOnceBeforeBuildPatterns: ['js/*.js', 'css/*.css']
     })
   ]
 };
